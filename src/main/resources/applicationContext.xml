@@ -17,7 +17,7 @@
         <property name="password" value="root"></property>
     </bean>
 
-    <!-- ======================================== 配置MyBatis的SqlSessionFactory ========================================= -->
+    <!-- ======================================== 配置Hibernate的SqlSessionFactory ========================================= -->
     <bean id="sqlSessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
         <property name="dataSource" ref="dataSource"></property>
         <property name="configLocation" value="classpath:hibernate.cfg.xml"></property>
@@ -31,6 +31,8 @@
     </bean>
     <tx:annotation-driven transaction-manager="txManager" /> <!-- 让事务支持注解 (使用声明式事务)-->
 
+    <!--=====================配置AOP============================-->
+    <aop:aspectj-autoproxy/>
 
 </beans>
 
