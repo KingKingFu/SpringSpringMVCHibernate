@@ -50,7 +50,7 @@ fastjson                       1.2.21
             <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
                 <property name="dataSource" ref="dataSource"/>
                 <property name="configLocation" value="classpath:hibernate.cfg.xml"/>
-                <property name="packagesToScan" value="com.ssh.entity"/>
+                <property name="packagesToScan" value="com.ssh.domain"/>
             </bean>
 
         3)spring 配置hibernate的事务管理

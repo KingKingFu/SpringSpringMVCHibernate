@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+    <!--============视图解析器 解析jsp 默认使用jstl标签=========-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <!--<property name="prefix" value="/WEB-INF/admin/"/>-->
+        <!--<property name="suffix" value=".jsp"/>-->
+    </bean>
+
+    <!--=============自动扫描=================================-->
+    <context:component-scan base-package="com.ssh"/>
+
+    <!--==============配置基于注解映射器、适配器================-->
+    <mvc:annotation-driven conversion-service="customConversionService">
+        <!--配置Jackson转换器返回数据为json-->
+        <mvc:message-converters register-defaults="true">
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <!--<value>application/json;charset=UTF-8</value>&lt;!&ndash;返回json对象&ndash;&gt;-->
+                        <value>text/json; charset=UTF-8</value><!--返回json字符串-->
+                        <!--<value>text/html; charset=UTF-8</value>&lt;!&ndash;返回json字符串&ndash;&gt;-->
+                        <!--<value>application/x-www-form-urlencoded; charset=UTF-8</value>-->
+                    </list>
+                </property>
+            </bean>
+            <!--<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <constructor-arg value="#{T(java.nio.charset.Charset).forName('UTF-8')}"/>
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>text/plain;charset=UTF-8</value>
+                        <value>text/html;charset=UTF-8</value>
+                        <value>text/json; charset=UTF-8</value>
+                    </list>
+                </property>
+                <property name="writeAcceptCharset"><value>false</value></property>
+            </bean>-->
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+    <!-- ==============配置拦截器 =========================== -->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/action/**"/>
+            <bean class="com.ssh.interceptor.LogInterceptor"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/action/**"/>
+            <bean class="com.ssh.interceptor.LoginInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+    <!--=============自定义参数绑定============================-->
+    <bean id="customConversionService"
+          class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+        <property name="converters">
+            <set>
+                <bean class="com.ssh.utils.String2DateTime"/>
+            </set>
+        </property>
+    </bean>
+
+    <!--==============支持文件上传=============================-->
+    <bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver" id="multipartResolver">
+        <property name="maxUploadSize" value="5242880"/>
+    </bean>
+
+
+</beans>

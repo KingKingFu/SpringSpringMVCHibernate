@@ -1,15 +1,18 @@
 <!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
 	<session-factory>
+		<!--配置hibernate基本属性-->
+		<!--数据源配置到IOC容器中，所以此处不再需要配置数据源-->
 		<!-- 数据库方言 -->
 		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
 		<!-- 配置是否显示Hibernate生成的SQL语句 -->
 		<property name="show_sql">true</property>
 		<!-- 格式化Hibernate生成的SQL语句 -->
 		<property name="format_sql">true</property>
-		<!-- 配置自动根据映射文件更新数据表 -->
+		<!-- 配置自动根据映射文件更新数据表（生成数据表的策略） -->
 		<property name="hbm2ddl.auto">update</property>
 		<!-- 配置currentSession的上下文环境 -->
 		<property name="hibernate.current_session_context_class">thread</property>
+		<!--配置hibernate二级缓存相关的属性-->
 	</session-factory>
 </hibernate-configuration>

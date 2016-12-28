@@ -15,14 +15,51 @@
         <property name="url" value="jdbc:mysql:///test2?useSSL=false"></property>
         <property name="username" value="root"></property>
         <property name="password" value="root"></property>
+
+        <!-- 初始化连接大小 -->
+        <property name="initialSize" value="10" />
+        <!-- 连接池最大使用连接数量 -->
+        <property name="maxActive" value="20" />
+        <!-- 连接池最小空闲 -->
+        <property name="minIdle" value="5" />
+        <!-- 获取连接最大等待时间 -->
+        <property name="maxWait" value="60000" />
+
+
+        <property name="validationQuery"><value>SELECT 1</value></property>
+        <property name="testOnBorrow" value="false" />
+        <property name="testOnReturn" value="false" />
+        <property name="testWhileIdle" value="true" />
+
+        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+        <property name="timeBetweenEvictionRunsMillis" value="60000" />
+        <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+        <property name="minEvictableIdleTimeMillis" value="25200000" />
+
+        <!-- 打开removeAbandoned功能 -->
+        <property name="removeAbandoned" value="true" />
+        <!-- 1800秒，也就是30分钟 -->
+        <property name="removeAbandonedTimeout" value="1800" />
+        <!-- 关闭abanded连接时输出错误日志 -->
+        <property name="logAbandoned" value="true" />
+
+        <!-- 监控数据库 -->
+        <!-- <property name="filters" value="stat" /> -->
+        <property name="filters" value="mergeStat" />
     </bean>
 
-    <!-- ======================================== 配置Hibernate的SqlSessionFactory ========================================= -->
+    <!-- 配置druid监控spring jdbc -->
+    <bean id="druid-stat-interceptor"
+          class="com.alibaba.druid.support.spring.stat.DruidStatInterceptor">
+    </bean>
+
+    <!-- ======================================== 配置Hibernate的SqlSessionFactory（实例化） ========================================= -->
+    <!--========================通过spring提供的LocalSessionFactoryBean进行配置====================================-->
     <bean id="sqlSessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
         <property name="dataSource" ref="dataSource"></property>
         <property name="configLocation" value="classpath:hibernate.cfg.xml"></property>
         <!-- 配置需要扫描的包路径，在该包下，所有的类注解配置都会被扫描 -->
-        <property name="packagesToScan" value="com.ssh.entity" />
+        <property name="packagesToScan" value="com.ssh.domain" />
     </bean>
 
     <!-- ========================================配置事务管理========================================= -->

@@ -1,7 +1,7 @@
 package com.ssh;
 
 
-import com.ssh.entity.Dept;
+import com.ssh.domain.Dept;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -47,5 +47,25 @@ public class SSHTest {
         }
     }
 
+    @Test
+    public void fun3() {
+        ApplicationContext act = new ClassPathXmlApplicationContext("applicationContext.xml");
+        SessionFactory sessionFactory = (SessionFactory) act.getBean("sqlSessionFactory");
+
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.getTransaction();
+        try {
+            transaction.begin();
+            //从主动方开始查，只查一次
+            Dept dept = new Dept(2, "222", "22");
+            session.persist(dept);
+            transaction.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            transaction.rollback();
+        } finally {
+            session.close();
+        }
+    }
 
 }
