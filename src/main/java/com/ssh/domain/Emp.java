@@ -1,13 +1,15 @@
 package com.ssh.domain;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @NamedQuery(name = "queryAll",query="from Emp")
 @Table(name = "tb_emp")
-public class Emp {
+public class Emp implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer empno;
 
     private String ename;

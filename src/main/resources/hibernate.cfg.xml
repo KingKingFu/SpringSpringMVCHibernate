@@ -11,8 +11,24 @@
 		<property name="format_sql">true</property>
 		<!-- 配置自动根据映射文件更新数据表（生成数据表的策略） -->
 		<property name="hbm2ddl.auto">update</property>
+
 		<!-- 配置currentSession的上下文环境 -->
-		<property name="hibernate.current_session_context_class">thread</property>
+		<property name="hibernate.current_session_context_class">org.springframework.orm.hibernate5.SpringSessionContext</property><!-- 交给Spring管理事务和关闭session -->
+		<!--<property name="hibernate.current_session_context_class">thread</property>--> <!-- Hibernate自行管理自己的session-->
+
 		<!--配置hibernate二级缓存相关的属性-->
+
+		<!-- 配置管理Session的方式 -->
+
+		<!--配置Hibernate的二级缓存属性-->
+		<property name="cache.use_second_level_cache">true</property>
+		<!--配置启用查询缓存-->
+		<property name="cache.use_query_cache">true</property>
+		<!-- 配置使用的二级缓存的产品 -->
+		<property name="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</property>
+
+		<!--自动提交-->
+		<property name="connection.autocommit">true</property>
+
 	</session-factory>
 </hibernate-configuration>

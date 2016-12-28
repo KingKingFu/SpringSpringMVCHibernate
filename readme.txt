@@ -18,6 +18,9 @@ standard                       1.1.2
 org.apache.commons.fileupload  1.2.2.LIFERAY-PATCHED-1  文件上传
 org.apache.commons.io          2.4
 fastjson                       1.2.21
+hibernate-ehcache             5.2.5.Final
+
+
 拷贝实体类(配置好注解信息)
 @Entity     @Table(name="")    @Id     @Column(unique = true,length = 25))
 @OneToMany(cascade = CascadeType.ALL,mappedBy = " ")
@@ -29,6 +32,13 @@ fastjson                       1.2.21
         配置自动扫描、配置数据源、配置MyBatis的SqlSessionFactory、配置事务管理
     hibernate.cfg.xml(只写其中关于hibernate原生配置信息)
         数据库方言、是否显示生成的sql语句、格式化输出sql语句、自动根据映射文件更新数据库、配置currentSession上下文
+ <!--配置Hibernate的二级缓存属性-->
+ 		<property name="cache.use_second_level_cache">true</property>
+ 		<!--配置启用查询缓存-->
+ 		<property name="cache.use_query_cache">true</property>
+ 		<!-- 配置使用的二级缓存的产品 -->
+ 		<property name="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</property>
+
     log4j.properties(查看输出的sql语句)
 
     1)spring 配置数据源
@@ -101,6 +111,16 @@ fastjson                       1.2.21
          <url-pattern>/*</url-pattern>
        </filter-mapping>
 
+       <!--getCurrentSession 配置此过滤器可以使用-->
+         <filter>
+           <filter-name>SpringOpenSessionInViewFilter</filter-name>
+           <filter-class>org.springframework.orm.hibernate5.support.OpenSessionInViewFilter</filter-class>
+         </filter>
+         <filter-mapping>
+           <filter-name>SpringOpenSessionInViewFilter</filter-name>
+           <url-pattern>/*</url-pattern>
+         </filter-mapping>
+
      2)配置springMVC文件
          <!--=============自动扫描=================================-->
          <context:component-scan base-package="com.ssh.action"/>
@@ -139,6 +159,12 @@ fastjson                       1.2.21
              <property name="maxUploadSize" value="5242880"/>
          </bean>
 ***********************************************************************************************
+注意事项：
+<!-- 配置currentSession的上下文环境 -->
+		<property name="hibernate.current_session_context_class">org.springframework.orm.hibernate5.SpringSessionContext</property><!-- 交给Spring管理事务和关闭session -->
+		<!--<property name="hibernate.current_session_context_class">thread</property>--> <!-- Hibernate自行管理自己的session-->
+
+
 测试
         生成表：
         ApplicationContext act = new ClassPathXmlApplicationContext("applicationContext.xml");

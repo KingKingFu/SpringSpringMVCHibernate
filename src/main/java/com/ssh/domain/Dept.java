@@ -1,6 +1,7 @@
 package com.ssh.domain;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -9,18 +10,19 @@ import java.util.Set;
  */
 @Entity
 @Table(name="tb_dept")
-public class Dept {
+public class Dept implements Serializable {
     @Id
-    private int deptno;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer deptno;
     @Column(unique = true,length = 25)
     private String dname;
     private String loc;
 
-    public int getDeptno() {
+    public Integer getDeptno() {
         return deptno;
     }
 
-    public void setDeptno(int deptno) {
+    public void setDeptno(Integer deptno) {
         this.deptno = deptno;
     }
 

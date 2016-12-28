@@ -1,6 +1,7 @@
 package com.ssh;
 
 
+import com.ssh.domain.Authgroup;
 import com.ssh.domain.Dept;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -11,7 +12,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class SSHTest {
     @Test
-    public void fun1() {
+    public void fun() {
         ApplicationContext act = new ClassPathXmlApplicationContext("applicationContext.xml");
         SessionFactory sessionFactory = (SessionFactory) act.getBean("sqlSessionFactory");
 
@@ -21,6 +22,29 @@ public class SSHTest {
         Session session1 = sessionFactory.openSession();
         Session session2 = sessionFactory.openSession();
         System.out.println(session1 == session2);
+    }
+    @Test
+    public void fun1() {
+        ApplicationContext act = new ClassPathXmlApplicationContext("applicationContext.xml");
+        SessionFactory sessionFactory = (SessionFactory) act.getBean("sqlSessionFactory");
+
+        Session session = sessionFactory.getCurrentSession();
+        Transaction transaction = session.getTransaction();
+        try {
+            transaction.begin();
+
+            Authgroup authgroup=new Authgroup();
+            authgroup.setName("1");
+            authgroup.setId(1);
+
+
+            transaction.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            transaction.rollback();
+        } finally {
+            session.close();
+        }
     }
 
 

@@ -2,8 +2,14 @@ package com.ssh.domain;
 
 import org.springframework.stereotype.Component;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import java.io.Serializable;
+
 @Component
-public class User {
+public class User implements Serializable {
     private Integer id;
 
     private String name;
@@ -42,4 +48,21 @@ public class User {
                 ", password='" + password + '\'' +
                 '}';
     }
+
+    /////////////////////////////////////////////////
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "province",column = @Column(name = "province")),@AttributeOverride(name = "city",column = @Column(name = "city"))
+    })
+    private Address address;
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+    ////////////////////////////////////////////////////////
+
 }

@@ -16,13 +16,13 @@
     </thead>
 
     <tbody>
-    <%--<c:forEach items="${depts}" var="dept">--%>
+    <c:forEach items="${depts}" var="dept">
         <tr>
             <td>${dept.deptno}</td>
             <td>${dept.dname}</td>
             <td>${dept.loc}</td>
         </tr>
-    <%--</c:forEach>--%>
+    </c:forEach>
     </tbody>
 </table>
 </body>
